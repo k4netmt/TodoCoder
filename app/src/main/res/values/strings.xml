@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">TodoAndroid</string>
+    <string name="Btn_Add" >Add</string>
+    <string name="EtAdd">Add New</string>
 </resources>
