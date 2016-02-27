@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             +" ("+ Define.KEY_TODOLIST_ID+" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) "
             +", "+Define.KEY_TODOLIST_TITLES+" TEXT DEFAULT (null) "
             +", "+Define.KEY_TODOLIST_DESCRIPTION+" TEXT DEFAULT (null) "
-            +", "+Define.KEY_TODOLIST_LEVEL+" INTEGER DEFAULT (null) )}";
+            +", "+Define.KEY_TODOLIST_LEVEL+" INTEGER DEFAULT (null) )";
     private String pathDatabase;
 
 
@@ -23,7 +23,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, Define.DATASE_NAME, null, 1);
         this.context = context;
-        pathDatabase = context.getFilesDir().getParent() + "/files/" + Define.DATASE_NAME;
+        pathDatabase = context.getFilesDir().getParent() + "/databases/" + Define.DATASE_NAME;
     }
 
     @Override
@@ -37,8 +37,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // TODO Auto-generated method stub
     }
 
-    public SQLiteDatabase openDatabase(){
-        return SQLiteDatabase.openDatabase(pathDatabase, null, SQLiteDatabase.OPEN_READWRITE);
+    public SQLiteDatabase writeDatabase(){
+        return SQLiteDatabase.openDatabase(pathDatabase, null, SQLiteDatabase.OPEN_READWRITE );
+    }
+
+    public SQLiteDatabase readDatabase(){
+        return SQLiteDatabase.openDatabase(pathDatabase, null, SQLiteDatabase.OPEN_READONLY);
     }
 
     public void createDatabase(){

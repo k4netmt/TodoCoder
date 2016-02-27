@@ -17,9 +17,11 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import Adapter.TodoListMainAdapter;
+import DAO.TodoListDAO;
 import DataProvider.TodoListDTO;
 
 public class MainActivity extends AppCompatActivity {
+    TodoListDAO todoDAO;
     ArrayList<TodoListDTO> todoItems;
     TodoListMainAdapter aToDoAdapter;
     ListView lvItems;
@@ -35,9 +37,11 @@ public class MainActivity extends AppCompatActivity {
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                todoItems.remove(position);
-                aToDoAdapter.notifyDataSetChanged();
-                //writeItems();
+                if(todoDAO.deleteItem(todoItems.get(position))==true)
+                {
+                    todoItems.remove(position);
+                    aToDoAdapter.notifyDataSetChanged();
+                }
                 return true;
             }
         });
@@ -46,9 +50,10 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent=new Intent(MainActivity.this,EditActivity.class);
-                intent.putExtra("index",todoItems.get(position).get_id());
+                intent.putExtra("index",position);
+                intent.putExtra("id",todoItems.get(position).get_id());
                 intent.putExtra("title",todoItems.get(position).get_titles());
-                intent.putExtra("desciption",todoItems.get(position).get_description());
+                intent.putExtra("description",todoItems.get(position).get_description());
                 intent.putExtra("level",todoItems.get(position).get_level());
                 startActivityForResult(intent, REQUEST_CODE);
             }
@@ -56,11 +61,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void populaterArrayItems(){
+        todoDAO=new TodoListDAO(this);
         todoItems=new ArrayList<TodoListDTO>();
+        todoItems=todoDAO.getList();
         //readItems();
-        todoItems.add(new TodoListDTO(0,"Items 1","Do homework",1));
+ /*       todoItems.add(new TodoListDTO(0,"Items 1","Do homework",1));
         todoItems.add(new TodoListDTO(1,"Items 2","Do homework",1));
-        todoItems.add(new TodoListDTO(2,"Items 3","Do homework",1));
+        todoItems.add(new TodoListDTO(2,"Items 3","Do homework",1));*/
         aToDoAdapter=new TodoListMainAdapter(this,todoItems);
         //aToDoAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems);
     }
@@ -80,16 +87,19 @@ public class MainActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
             // Extract name value from result extras
             int index = data.getExtras().getInt("index", -1);
+            int id=data.getExtras().getInt("id", -1);
             String title = data.getExtras().getString("title");
             String description = data.getExtras().getString("description");
             int level = data.getExtras().getInt("level", 0);
             if (index==-1) {
                 TodoListDTO todo=new TodoListDTO(todoItems.size(),title,description,level);
-                todoItems.add(todo);
+                if(todoDAO.addItem(todo)==true)
+                    todoItems.add(todo);
             }
             else {
-                TodoListDTO todo=new TodoListDTO(index,title,description,level);
-                todoItems.set(index, todo);
+                TodoListDTO todo=new TodoListDTO(id,title,description,level);
+                if(todoDAO.updateItem(todo)==true)
+                    todoItems.set(index, todo);
             }
 
             // Toast the name to display temporarily on screen
@@ -109,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }*/
 
-/*    private void writeItems(){
+   /*private void writeItems(){
         File filesDir=getFilesDir();
         File file=new File(filesDir,"todo.txt");
         try{
@@ -118,4 +128,5 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }*/
+
 }

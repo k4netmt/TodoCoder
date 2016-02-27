@@ -17,6 +17,7 @@ public class EditActivity extends AppCompatActivity {
     TodoListDTO mTodo;
     Button btnSave,btnCancel;
     RadioButton rdLow,rdMedium,rdHeight;
+    int mIndex;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,14 +40,15 @@ public class EditActivity extends AppCompatActivity {
             }
         });
 
-        int index = getIntent().getIntExtra("index", -1);
-        if (index != -1)
+        mIndex = getIntent().getIntExtra("index", -1);
+        if (mIndex != -1)
         {
+            int id = getIntent().getIntExtra("level", 0);
             String title = getIntent().getStringExtra("title");
             String description = getIntent().getStringExtra("description");
             int level = getIntent().getIntExtra("level", 0);
 
-            mTodo=new TodoListDTO(index,title,description,level);
+            mTodo=new TodoListDTO(id,title,description,level);
 
             etEditTitle.setText(title);
             etEditDesc.setText(description);
@@ -81,13 +83,10 @@ public class EditActivity extends AppCompatActivity {
         return -1;
     }
 
-    public void OnCancelEdit()
-    {
-
-    }
     public void OnDoneEdit(View view) {
         Intent intent = new Intent();
-        intent.putExtra("index", mTodo.get_id()); // pass arbitrary data to launched activity
+        intent.putExtra("index", mIndex); // pass arbitrary data to launched activity
+        intent.putExtra("id",mTodo.get_id());
         intent.putExtra("title",etEditTitle.getText().toString());
         intent.putExtra("description", etEditDesc.getText().toString());
         int level=GetLevel();
