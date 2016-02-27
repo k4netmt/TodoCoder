@@ -43,7 +43,7 @@ public class EditActivity extends AppCompatActivity {
         mIndex = getIntent().getIntExtra("index", -1);
         if (mIndex != -1)
         {
-            int id = getIntent().getIntExtra("level", 0);
+            int id = getIntent().getIntExtra("id", 0);
             String title = getIntent().getStringExtra("title");
             String description = getIntent().getStringExtra("description");
             int level = getIntent().getIntExtra("level", 0);

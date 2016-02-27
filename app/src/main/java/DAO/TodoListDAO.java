@@ -52,11 +52,12 @@ public class TodoListDAO {
     }
 
     // Insert a post into the database
-    public boolean addItem(TodoListDTO item) {
+    public long addItem(TodoListDTO item) {
         // Create and/or open the database for writing
         db=databaseSQLite.writeDatabase();
         // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
         // consistency of the database.
+        long id=-1;
         db.beginTransaction();
         try {
             // The user might already exist in the database (i.e. the same user created multiple posts).
@@ -65,14 +66,14 @@ public class TodoListDAO {
             values.put(Define.KEY_TODOLIST_DESCRIPTION, item.get_description());
             values.put(Define.KEY_TODOLIST_LEVEL, item.get_level());
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
-            db.insertOrThrow(Define.TABLE_TODOLIST_NAME, null, values);
+            id=db.insertOrThrow(Define.TABLE_TODOLIST_NAME, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            return false;
+            return id;
         } finally {
             db.endTransaction();
         }
-        return true;
+        return id;
     }
 
     // Update a post into the database

@@ -93,7 +93,9 @@ public class MainActivity extends AppCompatActivity {
             int level = data.getExtras().getInt("level", 0);
             if (index==-1) {
                 TodoListDTO todo=new TodoListDTO(todoItems.size(),title,description,level);
-                if(todoDAO.addItem(todo)==true)
+                long idAdd=todoDAO.addItem(todo);
+                if(id!=-1)
+                    todo.set_id((int)idAdd);
                     todoItems.add(todo);
             }
             else {
