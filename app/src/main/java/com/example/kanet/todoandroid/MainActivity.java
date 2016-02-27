@@ -1,5 +1,6 @@
 package com.example.kanet.todoandroid;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -7,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.apache.commons.io.FileUtils;
 
@@ -14,57 +16,100 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import Adapter.TodoListMainAdapter;
+import DataProvider.TodoListDTO;
+
 public class MainActivity extends AppCompatActivity {
-    ArrayList<String> todoItems;
-    ArrayAdapter<String> aToDoAdapter;
+    ArrayList<TodoListDTO> todoItems;
+    TodoListMainAdapter aToDoAdapter;
     ListView lvItems;
-    EditText etEditText;
+    private final int REQUEST_CODE = 20;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         populaterArrayItems();
         lvItems=(ListView)findViewById(R.id.lvItems);
+
         lvItems.setAdapter(aToDoAdapter);
-        etEditText=(EditText)findViewById(R.id.etAddNew);
         lvItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 todoItems.remove(position);
                 aToDoAdapter.notifyDataSetChanged();
-                writeItems();
+                //writeItems();
                 return true;
+            }
+        });
+
+       lvItems.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent=new Intent(MainActivity.this,EditActivity.class);
+                intent.putExtra("index",todoItems.get(position).get_id());
+                intent.putExtra("title",todoItems.get(position).get_titles());
+                intent.putExtra("desciption",todoItems.get(position).get_description());
+                intent.putExtra("level",todoItems.get(position).get_level());
+                startActivityForResult(intent, REQUEST_CODE);
             }
         });
     }
 
     public void populaterArrayItems(){
-        todoItems=new ArrayList<String>();
-        readItems();
-        /*todoItems.add("Items 1");
-        todoItems.add("Items 2");
-        todoItems.add("Items 3");*/
-        aToDoAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems);
+        todoItems=new ArrayList<TodoListDTO>();
+        //readItems();
+        todoItems.add(new TodoListDTO(0,"Items 1","Do homework",1));
+        todoItems.add(new TodoListDTO(1,"Items 2","Do homework",1));
+        todoItems.add(new TodoListDTO(2,"Items 3","Do homework",1));
+        aToDoAdapter=new TodoListMainAdapter(this,todoItems);
+        //aToDoAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems);
     }
 
     public void OnAddItems(View view) {
-        aToDoAdapter.add(etEditText.getText().toString());
-        etEditText.setText("");
-        writeItems();
+        //aToDoAdapter.add(etEditText.getText().toString());
+        //etEditText.setText("");
+        //writeItems();
+        Intent intent=new Intent(MainActivity.this,EditActivity.class);
+        intent.putExtra("index",-1);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
-    private void readItems(){
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // REQUEST_CODE is defined above
+        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
+            // Extract name value from result extras
+            int index = data.getExtras().getInt("index", -1);
+            String title = data.getExtras().getString("title");
+            String description = data.getExtras().getString("description");
+            int level = data.getExtras().getInt("level", 0);
+            if (index==-1) {
+                TodoListDTO todo=new TodoListDTO(todoItems.size(),title,description,level);
+                todoItems.add(todo);
+            }
+            else {
+                TodoListDTO todo=new TodoListDTO(index,title,description,level);
+                todoItems.set(index, todo);
+            }
+
+            // Toast the name to display temporarily on screen
+            //writeItems();
+            aToDoAdapter.notifyDataSetChanged();
+        }
+    }
+
+   /* private void readItems(){
         File filesDir=getFilesDir();
 
         File file=new File(filesDir,"todo.txt");
         try{
-            todoItems=new ArrayList<String>(FileUtils.readLines(file));
+            todoItems=new ArrayList<TodoListDTO>(FileUtils.readLines(file));
         }catch (IOException e){
 
         }
-    }
+    }*/
 
-    private void writeItems(){
+/*    private void writeItems(){
         File filesDir=getFilesDir();
         File file=new File(filesDir,"todo.txt");
         try{
@@ -72,5 +117,5 @@ public class MainActivity extends AppCompatActivity {
         }catch (IOException e){
 
         }
-    }
+    }*/
 }

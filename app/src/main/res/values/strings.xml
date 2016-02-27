@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">TodoAndroid</string>
-    <string name="Btn_Add" >Add</string>
+    <string name="Btn_Add">Add</string>
     <string name="EtAdd">Add New</string>
+    <string name="Edit_Text">Edit Item Below\'</string>
+    <string name="Btn_Save">Done</string>
+    <string name="add_titles" >Title</string>
+    <string name="add_descripntion" >Details</string>
+    <string name="btn_Cancel">Cancel</string>
+    <string name="rdLow">Low</string>
+    <string name="rdMedium">Medium</string>
+    <string name="rdHeight">High</string>
 </resources>
