@@ -51,6 +51,30 @@ public class TodoListDAO {
 
     }
 
+    public ArrayList<TodoListDTO> getListLevelDesc()
+    {
+        db=databaseSQLite.readDatabase();
+        ArrayList<TodoListDTO> lstDTO=null;
+        String strSQL="Select * From "+ Define.TABLE_TODOLIST_NAME+" ORDER BY " + Define.KEY_TODOLIST_LEVEL + " DESC";
+        Cursor cursor=db.rawQuery(strSQL, null);
+        cursor.moveToFirst();
+        lstDTO= new ArrayList<TodoListDTO>();
+        try {
+            while (!cursor.isAfterLast()) {
+                TodoListDTO dto=new TodoListDTO(cursor);
+                lstDTO.add(dto);
+                //Toast.makeText(context,dto.getM_sInforSyntax(),Toast.LENGTH_LONG).show();
+                cursor.moveToNext();
+            }
+        } catch (Exception e) {
+            //Log.d(TAG, "Error while trying to add post to database");
+        } finally {
+
+        }
+        return  lstDTO;
+
+    }
+
     // Insert a post into the database
     public long addItem(TodoListDTO item) {
         // Create and/or open the database for writing

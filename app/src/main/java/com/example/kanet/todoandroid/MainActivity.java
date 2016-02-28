@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     public void populaterArrayItems(){
         todoDAO=new TodoListDAO(this);
         todoItems=new ArrayList<TodoListDTO>();
-        todoItems=todoDAO.getList();
+        todoItems=todoDAO.getListLevelDesc();
         //readItems();
  /*       todoItems.add(new TodoListDTO(0,"Items 1","Do homework",1));
         todoItems.add(new TodoListDTO(1,"Items 2","Do homework",1));
@@ -105,7 +105,9 @@ public class MainActivity extends AppCompatActivity {
             }
 
             // Toast the name to display temporarily on screen
-            //writeItems();
+            //todoItems.clear();
+            todoItems.clear();
+            todoItems.addAll(todoDAO.getListLevelDesc());
             aToDoAdapter.notifyDataSetChanged();
         }
     }
