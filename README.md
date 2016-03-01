@@ -27,9 +27,9 @@ Walkthrough of all user stories:
 
 # TodoCoder Demo 01-03-2016
 Time spent: 2 hours spent in total
-1. Apply ViewHolder in Adapter, solution can improve the performance.
-2. After using a cursor and connection close it.
-3. Change name the function correct standard.
+*1. Apply ViewHolder in Adapter, solution can improve the performance.
+*2. After using a cursor and connection close it.
+*3. Change name the function correct standard.
 * [x] Optional:Add feature Sort todolist by Level follow cause Desc.
-* 
+
 ![Video Walkthrough](https://raw.githubusercontent.com/k4netmt/TodoCoder/48dd77f745a0efc41efbc3686cabe61e1122c59c/todoandroid.gif)
