@@ -69,7 +69,8 @@ public class TodoListDAO {
         } catch (Exception e) {
             //Log.d(TAG, "Error while trying to add post to database");
         } finally {
-
+            cursor.close();
+            db.close();
         }
         return  lstDTO;
 
@@ -93,9 +94,9 @@ public class TodoListDAO {
             id=db.insertOrThrow(Define.TABLE_TODOLIST_NAME, null, values);
             db.setTransactionSuccessful();
         } catch (Exception e) {
-            return id;
         } finally {
             db.endTransaction();
+            db.close();
         }
         return id;
     }
@@ -104,6 +105,7 @@ public class TodoListDAO {
     public boolean updateItem(TodoListDTO item) {
         // Create and/or open the database for writing
         db=databaseSQLite.writeDatabase();
+        boolean bFlag=false;
         // It's a good idea to wrap our insert in a transaction. This helps with performance and ensures
         // consistency of the database.
         db.beginTransaction();
@@ -116,27 +118,32 @@ public class TodoListDAO {
             // Notice how we haven't specified the primary key. SQLite auto increments the primary key column.
             db.update(Define.TABLE_TODOLIST_NAME, values, Define.KEY_TODOLIST_ID + " = ?", new String[]{String.valueOf(item.get_id())});
             db.setTransactionSuccessful();
+            bFlag=true;
         } catch (Exception e) {
-            return false;
+            bFlag=false;
         } finally {
             db.endTransaction();
+            db.close();
         }
-        return true;
+        return bFlag;
     }
 
     public boolean deleteItem(TodoListDTO item) {
         db=databaseSQLite.writeDatabase();
+        boolean bFlag=false;
         db.beginTransaction();
         try {
             // Order of deletions is important when foreign key relationships exist.
             db.delete(Define.TABLE_TODOLIST_NAME, Define.KEY_TODOLIST_ID + " = ?", new String[]{String.valueOf(item.get_id())});
             db.setTransactionSuccessful();
+            bFlag=true;
         } catch (Exception e) {
-            return false;
+            bFlag= false;
         } finally {
             db.endTransaction();
+            db.close();
         }
-        return true;
+        return bFlag;
     }
 
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.kanet.todoandroid.R;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import DataProvider.TodoListDTO;
@@ -46,20 +47,29 @@ public class TodoListMainAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        ViewHolderTodoItem viewHolder;
         if (convertView == null) {
-            LayoutInflater mInflater = (LayoutInflater)
-                    context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater mInflater = (LayoutInflater)context.getSystemService(Activity.LAYOUT_INFLATER_SERVICE);
             convertView = mInflater.inflate(R.layout.layout_todolistmain, null);
-        }
-        TextView tvTitle = (TextView) convertView.findViewById(R.id.tvTitles);
-        TextView tvLevel = (TextView) convertView.findViewById(R.id.tvLevel);
 
-        tvTitle.setText(todoListItems.get(position).get_titles().toString());
-        SetLevel(todoListItems.get(position).get_level(),tvLevel);
+            viewHolder=new ViewHolderTodoItem();
+            viewHolder.tvTitle=(TextView) convertView.findViewById(R.id.tvTitles);
+            viewHolder.tvLevel=(TextView) convertView.findViewById(R.id.tvLevel);
+
+            convertView.setTag(viewHolder);
+        }else {
+            viewHolder=(ViewHolderTodoItem)convertView.getTag();
+        }
+
+        if (todoListItems.get(position)!=null){
+            viewHolder.tvTitle.setText(todoListItems.get(position).get_titles().toString());
+            setLevel(todoListItems.get(position).get_level(),viewHolder.tvLevel);
+        }
+
         return convertView;
     }
 
-    private void SetLevel(int level,TextView tvLevel)
+    private void setLevel(int level,TextView tvLevel)
     {
         switch (level)
         {

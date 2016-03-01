@@ -2,14 +2,17 @@ package DataProvider;
 
 import android.database.Cursor;
 
+import java.io.Serializable;
+
 /**
  * Created by Kanet on 2/27/2016.
  */
-public class TodoListDTO {
+public class TodoListDTO implements Serializable {
     private int _id;
     private String _titles;
     private String _description;
     private int _level;
+    private static final long serialVersionUID = 46543445;
 
     public int get_id() {
         return _id;

@@ -89,7 +89,7 @@
         android:layout_height="wrap_content"
         android:text="@string/Btn_Save"
         android:id="@+id/btnSave"
-        android:onClick="OnDoneEdit"
+        android:onClick="onDoneEdit"
         android:layout_below="@+id/rdgp_level"
         android:layout_alignTop="@+id/btnCancelEdit"
         android:layout_toRightOf="@+id/btnCancelEdit"

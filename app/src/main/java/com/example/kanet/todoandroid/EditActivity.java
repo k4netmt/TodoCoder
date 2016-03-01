@@ -52,7 +52,7 @@ public class EditActivity extends AppCompatActivity {
 
             etEditTitle.setText(title);
             etEditDesc.setText(description);
-            CheckedRadion(level);
+            checkedRadion(level);
         }
         else
         {
@@ -62,7 +62,7 @@ public class EditActivity extends AppCompatActivity {
 
     }
 
-    private void CheckedRadion(int level)
+    private void checkedRadion(int level)
     {
         switch (level)
         {
@@ -72,7 +72,7 @@ public class EditActivity extends AppCompatActivity {
         }
     }
 
-    private int GetLevel()
+    private int getLevel()
     {
         if (rdLow.isChecked())
             return 0;
@@ -83,14 +83,14 @@ public class EditActivity extends AppCompatActivity {
         return -1;
     }
 
-    public void OnDoneEdit(View view) {
+    public void onDoneEdit(View view) {
         Intent intent = new Intent();
         intent.putExtra("index", mIndex); // pass arbitrary data to launched activity
         intent.putExtra("id",mTodo.get_id());
         intent.putExtra("title",etEditTitle.getText().toString());
         intent.putExtra("description", etEditDesc.getText().toString());
-        int level=GetLevel();
-        intent.putExtra("level",level);
+        int level=getLevel();
+        intent.putExtra("level", level);
         setResult(RESULT_OK, intent); // set result code and bundle data for response
         finish(); // closes the activity, pass data to parent
     }

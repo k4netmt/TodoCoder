@@ -5,15 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
-
-import org.apache.commons.io.FileUtils;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import Adapter.TodoListMainAdapter;
@@ -72,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         //aToDoAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1,todoItems);
     }
 
-    public void OnAddItems(View view) {
+    public void onAddItems(View view) {
         //aToDoAdapter.add(etEditText.getText().toString());
         //etEditText.setText("");
         //writeItems();
