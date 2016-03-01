@@ -32,4 +32,4 @@ Time spent: 2 hours spent in total
 3. Change name the function correct standard.
 * [x] Optional:Add feature Sort todolist by Level follow cause Desc.
 * 
-![Video Walkthrough](TodoCoder/todoandroid.gif)
+![Video Walkthrough](https://raw.githubusercontent.com/k4netmt/TodoCoder/48dd77f745a0efc41efbc3686cabe61e1122c59c/todoandroid.gif)
